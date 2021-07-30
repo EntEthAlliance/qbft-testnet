@@ -1,0 +1,45 @@
+{
+    "config": {
+        "chainid": 1223,
+        "homesteadBlock": 0,
+        "eip150Block": 0,
+        "eip155Block": 0,
+        "eip158Block": 0,
+        "byzantiumBlock": 0,
+        "petersburgBlock": 0,
+        "berlinBlock": 0,
+        "contractSizeLimit": 2147483647,
+        "qbft": {
+            "epochlength": 30000,
+            "blockperiodseconds": 5,
+            "requesttimeoutseconds": 10
+        }
+    },
+    "nonce": "0x0",
+    "timestamp": "0x61038bd1",
+    "extraData": "0xf8b9ac0ffee00000000000000000000000000000000000000000000000000000000000f89394901d15b6aa9f158a4ef4edaa626b27e06b3c5f8a94260d434be2a655f3355d785947185bea601ab0a494425822254cd84317cb3640ee8f313846900d04db944ae3b6b0d5ba2f5a216c3cc983c6a0248f540e44944b719785d6eff11b28699c54aeb6fc4b0f286ae194642def297eef3f26c9acf8142e94bc6c8284e45c9425162f5ff2095cb604671cfc8bb8f587c71bdb8bc080c0",
+    "gasLimit": "0x29b92700",
+    "difficulty": "0x1",
+    "mixHash": "0x63746963616c2062797a616e74696e65206661756c7420746f6c6572616e6365",
+    "coinbase": "0x0000000000000000000000000000000000000000",
+    "alloc": {
+        "fe3b557e8fb62b89f4916b721be55ceb828dbd73": {
+          "privateKey": "8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63",
+          "comment": "private key and this comment are ignored.  In a real chain, the private key should NOT be stored",
+          "balance": "0xad78ebc5ac6200000"
+        },
+        "627306090abaB3A6e1400e9345bC60c78a8BEf57": {
+          "privateKey": "c87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3",
+          "comment": "private key and this comment are ignored.  In a real chain, the private key should NOT be stored",
+          "balance": "90000000000000000000000"
+        },
+        "f17f52151EbEF6C7334FAD080c5704D77216b732": {
+          "privateKey": "ae6ae8e5ccbfb04590405997ee2d52d2b330726137b875053c36d94e974d162f",
+          "comment": "private key and this comment are ignored.  In a real chain, the private key should NOT be stored",
+          "balance": "90000000000000000000000"
+        }
+    },
+    "number": "0x0",
+    "gasUsed": "0x0",
+    "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000"
+    }

@@ -1,3 +1,172 @@
 version: 3
 services:
-    # TODO
+    # Besu nodes
+    besu_1:
+        container_name: besu_1
+        restart: "on-failure"
+        image: hyperledger/besu:${BESU_VERSION:-latest}
+        command: |
+            --config-file=/config/config.toml \
+            --p2p-host=$$(hostname -i) \
+            --genesis-file=/var/besu/genesis.json \
+            --node-private-key-file=/var/besu/key1
+        volumes:
+            - ./config:/var/besu/
+        environment:
+            - OTEL_EXPORTER_OTLP_METRIC_ENDPOINT=otelcollector:55680
+            - OTEL_EXPORTER_OTLP_SPAN_ENDPOINT=otelcollector:55680
+            - OTEL_EXPORTER_OTLP_METRIC_INSECURE=true
+            - OTEL_EXPORTER_OTLP_SPAN_INSECURE=true
+    besu_2:
+        container_name: besu_2
+        restart: "on-failure"
+        image: hyperledger/besu:${BESU_VERSION:-latest}
+        command: |
+            --config-file=/config/config.toml \
+            --p2p-host=$$(hostname -i) \
+            --genesis-file=/var/besu/genesis.json \
+            --node-private-key-file=/var/besu/key2
+        volumes:
+            - ./config:/var/besu/
+        environment:
+            - OTEL_EXPORTER_OTLP_METRIC_ENDPOINT=otelcollector:55680
+            - OTEL_EXPORTER_OTLP_SPAN_ENDPOINT=otelcollector:55680
+            - OTEL_EXPORTER_OTLP_METRIC_INSECURE=true
+            - OTEL_EXPORTER_OTLP_SPAN_INSECURE=true
+    besu_3:
+        container_name: besu_3
+        restart: "on-failure"
+        image: hyperledger/besu:${BESU_VERSION:-latest}
+        command: |
+            --config-file=/config/config.toml \
+            --p2p-host=$$(hostname -i) \
+            --genesis-file=/var/besu/genesis.json \
+            --node-private-key-file=/var/besu/key3
+        volumes:
+            - ./config:/var/besu/
+        environment:
+            - OTEL_EXPORTER_OTLP_METRIC_ENDPOINT=otelcollector:55680
+            - OTEL_EXPORTER_OTLP_SPAN_ENDPOINT=otelcollector:55680
+            - OTEL_EXPORTER_OTLP_METRIC_INSECURE=true
+            - OTEL_EXPORTER_OTLP_SPAN_INSECURE=true
+    besu_4:
+        container_name: besu_4
+        restart: "on-failure"
+        image: hyperledger/besu:${BESU_VERSION:-latest}
+        command: |
+            --config-file=/config/config.toml \
+            --p2p-host=$$(hostname -i) \
+            --genesis-file=/var/besu/genesis.json \
+            --node-private-key-file=/var/besu/key4
+        volumes:
+            - ./config:/var/besu/
+        environment:
+            - OTEL_EXPORTER_OTLP_METRIC_ENDPOINT=otelcollector:55680
+            - OTEL_EXPORTER_OTLP_SPAN_ENDPOINT=otelcollector:55680
+            - OTEL_EXPORTER_OTLP_METRIC_INSECURE=true
+            - OTEL_EXPORTER_OTLP_SPAN_INSECURE=true
+    # GoQuorum nodes
+    quorum_1:
+        container_name: quorum_1
+        restart: "on-failure"
+        image: quorumengineering/quorum:${QUORUM_VERSION:-2.7.0}
+        healthcheck:
+          test: ["CMD", "wget", "--spider", "--proxy", "off", "http://localhost:8545"]
+          interval: 3s
+          timeout: 3s
+          retries: 10
+          start_period: 5s
+        volumes: 
+            - ./config:/var/quorum/
+        entrypoint:
+          - /bin/sh
+          - -c
+          - |
+            mkdir -p /var/log/quorum/;
+            mkdir -p /data;
+            cp -r /quorum/* /data;
+            geth --datadir=/data init /var/quorum/genesis.json;
+            cp /var/quorum/key5 /data/keystore/key;
+            cp /config/keys/nodekey /data/geth/nodekey;
+            geth \
+            --datadir /data \
+            --nodiscover \
+            --permissioned \
+            --verbosity 5 \
+            --istanbul.blockperiod 5 --mine --minerthreads 1 --miner.gasprice 0 --emitcheckpoints \
+            --syncmode full --nousb \
+            --metrics --pprof --pprofaddr 0.0.0.0 --pprofport 9545 \
+            --networkid 1223 \
+            --rpc --rpcaddr 0.0.0.0 --rpcport 8545 --rpccorsdomain "*" --rpcvhosts "*" --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum,ibft \
+            --port 30303 \
+            --identity node5-ibft
+    quorum_2:
+        container_name: quorum_2
+        restart: "on-failure"
+        image: quorumengineering/quorum:${QUORUM_VERSION:-2.7.0}
+        healthcheck:
+          test: ["CMD", "wget", "--spider", "--proxy", "off", "http://localhost:8545"]
+          interval: 3s
+          timeout: 3s
+          retries: 10
+          start_period: 5s
+        volumes: 
+            - ./config:/var/quorum/
+        entrypoint:
+          - /bin/sh
+          - -c
+          - |
+            mkdir -p /var/log/quorum/;
+            mkdir -p /data;
+            cp -r /quorum/* /data;
+            geth --datadir=/data init /var/quorum/genesis.json;
+            cp /var/quorum/key6 /data/keystore/key;
+            cp /config/keys/nodekey /data/geth/nodekey;
+            geth \
+            --datadir /data \
+            --nodiscover \
+            --permissioned \
+            --verbosity 5 \
+            --istanbul.blockperiod 5 --mine --minerthreads 1 --miner.gasprice 0 --emitcheckpoints \
+            --syncmode full --nousb \
+            --metrics --pprof --pprofaddr 0.0.0.0 --pprofport 9545 \
+            --networkid 1223 \
+            --rpc --rpcaddr 0.0.0.0 --rpcport 8545 --rpccorsdomain "*" --rpcvhosts "*" --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum,ibft \
+            --port 30303 \
+            --identity node6-ibft
+    quorum_3:
+        container_name: quorum_3
+        restart: "on-failure"
+        image: quorumengineering/quorum:${QUORUM_VERSION:-2.7.0}
+        healthcheck:
+          test: ["CMD", "wget", "--spider", "--proxy", "off", "http://localhost:8545"]
+          interval: 3s
+          timeout: 3s
+          retries: 10
+          start_period: 5s
+        volumes: 
+            - ./config:/var/quorum/
+        entrypoint:
+          - /bin/sh
+          - -c
+          - |
+            mkdir -p /var/log/quorum/;
+            mkdir -p /data;
+            cp -r /quorum/* /data;
+            geth --datadir=/data init /var/quorum/genesis.json;
+            cp /var/quorum/key7 /data/keystore/key;
+            cp /config/keys/nodekey /data/geth/nodekey;
+            geth \
+            --datadir /data \
+            --nodiscover \
+            --permissioned \
+            --verbosity 5 \
+            --istanbul.blockperiod 5 --mine --minerthreads 1 --miner.gasprice 0 --emitcheckpoints \
+            --syncmode full --nousb \
+            --metrics --pprof --pprofaddr 0.0.0.0 --pprofport 9545 \
+            --networkid 1223 \
+            --rpc --rpcaddr 0.0.0.0 --rpcport 8545 --rpccorsdomain "*" --rpcvhosts "*" --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum,ibft \
+            --port 30303 \
+            --identity node7-ibft
+    # Tessera enclaves
+    # Otel collector
