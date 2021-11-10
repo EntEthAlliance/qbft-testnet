@@ -637,8 +637,8 @@ services:
       - validator1
       - member1tessera
     ports:
-      - 20000:8545/tcp
-      - 20001:8546/tcp
+      - 20001:8545/tcp
+      - 20011:8546/tcp
     networks:
       quorum-dev-quickstart:
         ipv4_address: 172.16.239.10
@@ -691,7 +691,7 @@ services:
       - member2tessera
     ports:
       - 20002:8545/tcp
-      - 20003:8546/tcp
+      - 20012:8546/tcp
     networks:
       quorum-dev-quickstart:
         ipv4_address: 172.16.239.17
@@ -743,8 +743,8 @@ services:
       - validator1
       - member3tessera
     ports:
-      - 20004:8545/tcp
-      - 20005:8546/tcp
+      - 20003:8545/tcp
+      - 20013:8546/tcp
     networks:
       quorum-dev-quickstart:
         ipv4_address: 172.16.239.18
@@ -771,7 +771,7 @@ services:
   member4tessera:
     << : *tessera-def
     ports:
-      - 9081:9080
+      - 9084:9080
     environment:
       - TESSERA_CONFIG_TYPE="-09"
       - NODE_ID=6
@@ -788,8 +788,8 @@ services:
   member4quorum:
     << : *quorum-member-def
     ports:
-      - 20000:8545/tcp
-      - 20001:8546/tcp
+      - 20004:8545/tcp
+      - 20014:8546/tcp
       - 30303
       - 9545
     depends_on:
@@ -809,7 +809,7 @@ services:
   member5tessera:
     << : *tessera-def
     ports:
-      - 9082:9080
+      - 9085:9080
     environment:
       - TESSERA_CONFIG_TYPE="-09"
       - NODE_ID=7
@@ -826,8 +826,8 @@ services:
   member5quorum:
     << : *quorum-member-def
     ports:
-      - 20002:8545/tcp
-      - 20003:8546/tcp
+      - 20005:8545/tcp
+      - 20015:8546/tcp
       - 30303
       - 9545
     depends_on:
@@ -847,7 +847,7 @@ services:
   member6tessera:
     << : *tessera-def
     ports:
-      - 9083:9080
+      - 9086:9080
     environment:
       - TESSERA_CONFIG_TYPE="-09"
       - NODE_ID=8
@@ -864,8 +864,8 @@ services:
   member6quorum:
     << : *quorum-member-def
     ports:
-      - 20004:8545/tcp
-      - 20005:8546/tcp
+      - 20006:8545/tcp
+      - 20016:8546/tcp
       - 30303
       - 9545
     depends_on:
