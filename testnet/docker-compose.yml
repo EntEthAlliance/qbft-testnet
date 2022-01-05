@@ -749,25 +749,6 @@ services:
       quorum-dev-quickstart:
         ipv4_address: 172.16.239.18
 
-  rpcnode:
-    << : *quorum-def
-    container_name: rpcnode
-    ports:
-      - 8545:8545/tcp
-      - 8546:8546/tcp
-      - 30303
-      - 9545
-    environment:
-      - NODE_ID=5
-      - PRIVATE_CONFIG=ignore
-    volumes:
-      - ./config/goquorum:/quorum
-      - ./config/nodes/rpcnode:/config/keys
-      - ./logs/quorum:/var/log/quorum/
-    networks:
-      quorum-dev-quickstart:
-        ipv4_address: 172.16.239.40
-
   member4tessera:
     << : *tessera-def
     ports:
