@@ -83,7 +83,7 @@ x-quorum-def:
       --rpc --rpcaddr 0.0.0.0 --rpcport 8545 --rpccorsdomain "*" --rpcvhosts "*" --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum,$$QUORUM_API \
       --ws --wsaddr 0.0.0.0 --wsport 8546 --wsorigins "*" --wsapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum,$$QUORUM_API \
       --port 30303 \
-      --identity node$${NODE_ID}-$${GOQUORUM_CONS_ALGO} \
+      --identity node$${NODE_ID}-qbft \
       --unlock 0 \
       --allow-insecure-unlock \
       --password /config/passwords.txt \
