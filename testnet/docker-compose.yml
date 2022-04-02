@@ -19,8 +19,8 @@ x-besu-bootnode-def:
       --genesis-file=/config/genesis.json \
       --node-private-key-file=/opt/besu/keys/nodekey \
       --min-gas-price=0 \
-      --rpc-http-api=EEA,WEB3,ETH,NET,PRIV,PERM,${BESU_CONS_ALGO:-QBFT} \
-      --rpc-ws-api=EEA,WEB3,ETH,NET,PRIV,PERM,${BESU_CONS_ALGO:-QBFT} ;
+      --rpc-http-api=EEA,WEB3,ETH,NET,PRIV,PERM,QBFT \
+      --rpc-ws-api=EEA,WEB3,ETH,NET,PRIV,PERM,QBFT;
 
 
 x-besu-def:
@@ -41,44 +41,8 @@ x-besu-def:
       --genesis-file=/config/genesis.json \
       --node-private-key-file=/opt/besu/keys/nodekey \
       --min-gas-price=0 \
-      --rpc-http-api=EEA,WEB3,ETH,NET,PRIV,PERM,${BESU_CONS_ALGO:-QBFT} \
-      --rpc-ws-api=EEA,WEB3,ETH,NET,PRIV,PERM,${BESU_CONS_ALGO:-QBFT} ;
-
-x-besu-tx-def:
-  &besu-tx-def
-  restart: "on-failure"
-  image: hyperledger/besu:${BESU_VERSION:-latest}
-  environment:
-    - LOG4J_CONFIGURATION_FILE=/config/log-config.xml
-  entrypoint:
-    - /bin/bash
-    - -c
-    - |
-
-
-      for i in $$(seq 1 100)
-      do
-        set -e
-        if [ "I'm up!" == "$$(wget --timeout 10 -qO- --proxy off 172.16.239.2$${NODE_ID}:9000/upcheck)" ];
-          then break
-        else
-          echo "Waiting for Tessera..."
-          sleep 10
-        fi
-      done
-
-
-
-      while [ ! -f "/opt/besu/public-keys/bootnode_pubkey" ]; do sleep 5; done ;
-
-      /opt/besu/bin/besu \
-      --config-file=/config/config.toml \
-      --p2p-host=$$(hostname -i) \
-      --genesis-file=/config/genesis.json \
-      --node-private-key-file=/opt/besu/keys/nodekey \
-      --min-gas-price=0 \
-      --rpc-http-api=EEA,WEB3,ETH,NET,PRIV,PERM,${BESU_CONS_ALGO:-QBFT} \
-      --rpc-ws-api=EEA,WEB3,ETH,NET,PRIV,PERM,${BESU_CONS_ALGO:-QBFT} ;
+      --rpc-http-api=EEA,WEB3,ETH,NET,PRIV,PERM,QBFT \
+      --rpc-ws-api=EEA,WEB3,ETH,NET,PRIV,PERM,QBFT ;
 
 x-quorum-def:
   &quorum-def
@@ -252,6 +216,7 @@ services:
     container_name: validator1
     environment:
       - OTEL_RESOURCE_ATTRIBUTES=service.name=validator1,service.version=${BESU_VERSION:-latest}
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4318
     volumes:
       - public-keys:/tmp/
       - ./config/besu/:/config
@@ -266,6 +231,7 @@ services:
     container_name: validator2
     environment:
       - OTEL_RESOURCE_ATTRIBUTES=service.name=validator2,service.version=${BESU_VERSION:-latest}
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4318
     volumes:
       - public-keys:/opt/besu/public-keys/
       - ./config/besu/:/config
@@ -318,6 +284,7 @@ services:
     container_name: rpcnode
     environment:
       - OTEL_RESOURCE_ATTRIBUTES=service.name=rpcnode,service.version=${BESU_VERSION:-latest}
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4318
     volumes:
       - public-keys:/opt/besu/public-keys/
       - ./config/besu/:/config
