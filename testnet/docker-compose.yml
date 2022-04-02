@@ -218,6 +218,7 @@ services:
       - OTEL_RESOURCE_ATTRIBUTES=service.name=validator1,service.version=${BESU_VERSION:-latest}
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcollector:4317
       - OTEL_EXPORTER_OTLP_INSECURE=true
+      - OTEL_LOG_LEVEL=debug
     volumes:
       - public-keys:/tmp/
       - ./config/besu/:/config
