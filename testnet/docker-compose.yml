@@ -12,8 +12,6 @@ x-besu-bootnode-def:
     - -c
     - |
 
-      cp "/config/${BESU_CONS_ALGO:-QBFT}genesis.json" /config/genesis.json
-
       /opt/besu/bin/besu public-key export --to=/tmp/bootnode_pubkey;
       /opt/besu/bin/besu \
       --config-file=/config/config.toml \
@@ -35,8 +33,6 @@ x-besu-def:
     - /bin/bash
     - -c
     - |
-
-      cp "/config/${BESU_CONS_ALGO:-QBFT}genesis.json" /config/genesis.json
 
       while [ ! -f "/opt/besu/public-keys/bootnode_pubkey" ]; do sleep 5; done ;
       /opt/besu/bin/besu \
@@ -74,8 +70,6 @@ x-besu-tx-def:
 
 
       while [ ! -f "/opt/besu/public-keys/bootnode_pubkey" ]; do sleep 5; done ;
-
-      cp "/config/${BESU_CONS_ALGO:-QBFT}genesis.json" /config/genesis.json
 
       /opt/besu/bin/besu \
       --config-file=/config/config.toml \
@@ -188,26 +182,11 @@ x-quorum-def:
     - /bin/sh
     - -c
     - |
-      if [ "istanbul" == "$GOQUORUM_CONS_ALGO" ];
-      then
-        echo "Using istanbul for consensus algorithm..."
-        export CONSENSUS_ARGS="--istanbul.blockperiod 5 --mine --minerthreads 1 --miner.gasprice 0 --emitcheckpoints"
-        export QUORUM_API="istanbul"
-      elif [ "qbft" == "$GOQUORUM_CONS_ALGO" ];
-      then
-        echo "Using qbft for consensus algorithm..."
-        export CONSENSUS_ARGS="--istanbul.blockperiod 5 --mine --minerthreads 1 --miner.gasprice 0 --emitcheckpoints"
-        export QUORUM_API="istanbul,qbft"
-      elif [ "raft" == "$GOQUORUM_CONS_ALGO" ];
-      then
-        echo "Using raft for consensus algorithm..."
-        export CONSENSUS_ARGS="--raft --raftblocktime 300 --raftport 53000"
-        export QUORUM_API="raft"
-      fi
+      export CONSENSUS_ARGS="--istanbul.blockperiod 5 --mine --minerthreads 1 --miner.gasprice 0 --emitcheckpoints"
+      export QUORUM_API="istanbul,qbft"
 
       mkdir -p /config /data /var/log/quorum/;
       cp /quorum/passwords.txt /config/passwords.txt
-      cp "/quorum/${GOQUORUM_CONS_ALGO}Genesis.json" /config/genesis.json
       cp -r /quorum/* /data;
       geth --datadir=/data init /config/genesis.json;
       cp /config/keys/accountkey /data/keystore/key;
@@ -281,7 +260,6 @@ x-quorum-member-def:
 
       mkdir -p /config /data/dd /var/log/quorum/;
       cp /quorum/passwords.txt /config/passwords.txt
-      cp "/quorum/${GOQUORUM_CONS_ALGO}Genesis.json" /config/genesis.json
       cp -r /quorum/* /data/dd/;
       geth --datadir=/data/dd init /config/genesis.json;
       cp /config/keys/accountkey /data/dd/keystore/key;
@@ -606,22 +584,8 @@ networks:
 
 volumes:
   cakeshop:
-  member1volume:
-  member2volume:
-  member3volume:
-  member4volume:
-  member5volume:
-  member6volume:
-  member7volume:
   splunk:
   ethlogger:
   prometheus:
   grafana:
   public-keys:
-  member1tessera:
-  member2tessera:
-  member3tessera:
-  member4tessera:
-  member5tessera:
-  member6tessera:
-  member7tessera:
