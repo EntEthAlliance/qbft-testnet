@@ -68,7 +68,7 @@ x-quorum-def:
       mkdir -p /config /data /var/log/quorum/;
       cp /quorum/passwords.txt /config/passwords.txt
       cp -r /quorum/* /data;
-      geth --datadir=/data init /config/genesis.json;
+      geth --datadir=/data init /quorum/genesis.json;
       cp /config/keys/accountkey /data/keystore/key;
       cp /config/keys/nodekey /data/geth/nodekey;
       geth \
