@@ -15,7 +15,12 @@
       "ceil2Nby3Block" : 0
     },
     "maxCodeSize" : 0,
-    "txnSizeLimit" : 64
+    "txnSizeLimit" : 64,
+    "qbft": {
+      "epochlength": 30000,
+      "blockperiodseconds": 5,
+      "requesttimeoutseconds": 10
+    }
   },
   "nonce" : "0x0000000000000000",
   "timestamp" : "0x0",
