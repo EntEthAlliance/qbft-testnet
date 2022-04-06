@@ -76,7 +76,7 @@ x-quorum-def:
       --verbosity 5 \
       --istanbul.blockperiod 5 --mine --miner.threads 1 --miner.gasprice 0 --emitcheckpoints \
       --syncmode full --nousb \
-      --metrics --pprof --pprofaddr 0.0.0.0 --pprofport 9545 \
+      --metrics --pprof --pprof.addr 0.0.0.0 --pprof.port 9545 \
       --networkid $${QUORUM_NETWORK_ID:-1337} \
       --rpc --rpcaddr 0.0.0.0 --rpcport 8545 --rpccorsdomain "*" --rpcvhosts "*" --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum,istanbul,qbft \
       --ws --wsaddr 0.0.0.0 --wsport 8546 --wsorigins "*" --wsapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum,istanbul,qbft \
