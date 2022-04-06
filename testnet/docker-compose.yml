@@ -19,6 +19,8 @@ x-besu-bootnode-def:
       --genesis-file=/config/genesis.json \
       --node-private-key-file=/opt/besu/keys/nodekey \
       --min-gas-price=0 \
+      --miner-enabled=true \
+      --miner-coinbase=0x1c31dd12fec91f406fad36056299c898ec50a617 \
       --rpc-http-api=EEA,WEB3,ETH,NET,PRIV,PERM,QBFT \
       --rpc-ws-api=EEA,WEB3,ETH,NET,PRIV,PERM,QBFT;
 
@@ -40,7 +42,6 @@ x-besu-def:
       --p2p-host=$$(hostname -i) \
       --genesis-file=/config/genesis.json \
       --node-private-key-file=/opt/besu/keys/nodekey \
-      --min-gas-price=0 \
       --rpc-http-api=EEA,WEB3,ETH,NET,PRIV,PERM,QBFT \
       --rpc-ws-api=EEA,WEB3,ETH,NET,PRIV,PERM,QBFT ;
 
@@ -226,7 +227,7 @@ services:
         ipv4_address: 172.16.239.11
 
   validator2:
-    << : *besu-def
+    << : *besu-bootnode-def
     container_name: validator2
     environment:
       - OTEL_RESOURCE_ATTRIBUTES=service.name=validator2,service.version=${BESU_VERSION:-latest}
