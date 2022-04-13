@@ -92,7 +92,6 @@ x-cakeshop-def:
   image: quorumengineering/cakeshop:${QUORUM_CAKESHOP_VERSION:-latest}
   expose:
     - 8999
-  restart: "no"
   healthcheck:
     test: ["CMD", "wget", "--spider", "--proxy=off", "http://localhost:8999/actuator/health"]
     interval: 5s
@@ -129,6 +128,7 @@ x-splunk-def:
     interval: 5s
     timeout: 5s
     retries: 20
+  restart: "unless-stopped"
   volumes:
     - ./splunk/splunk.yml:/tmp/defaults/default.yml
     - splunk:/opt/splunk/var
@@ -145,6 +145,7 @@ x-otelcollector-def:
   volumes:
     - ./splunk/otel-collector-config.yml:/etc/otel/config.yaml
     - /var/log:/var/log
+  restart: "unless-stopped"
   environment:
     - SPLUNK_HEC_TOKEN=11111111-1111-1111-1111-1111111111113
     - SPLUNK_ACCESS_TOKEN=disable # You can use this option to send data to Splunk Cloud.
@@ -319,6 +320,7 @@ services:
     networks:
       quorum-dev-quickstart:
         ipv4_address: 172.16.239.100
+    restart: always
 
   explorer:
     build: block-explorer-light/.
@@ -330,6 +332,20 @@ services:
     networks:
       quorum-dev-quickstart:
         ipv4_address: 172.16.239.101
+    restart: "unless-stopped"
+
+  remix:
+    image: remixproject/remix-ide:latest
+    depends_on:
+      - rpcnode
+    ports:
+      - 8080:80/tcp
+    networks:
+      quorum-dev-quickstart:
+        ipv4_address: 172.16.239.103
+    restart: "unless-stopped"
+
+
 
   prometheus:
     image: "prom/prometheus"
@@ -343,6 +359,7 @@ services:
     networks:
       quorum-dev-quickstart:
         ipv4_address: 172.16.239.32
+  restart: "unless-stopped"
 
   splunk:
     << : *splunk-def
@@ -374,6 +391,7 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
     command:
       - --docker_only=true
+    restart: "unless-stopped"
     networks:
       quorum-dev-quickstart:
         ipv4_address: 172.16.239.102
