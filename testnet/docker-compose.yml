@@ -359,7 +359,7 @@ services:
     networks:
       quorum-dev-quickstart:
         ipv4_address: 172.16.239.32
-  restart: unless-stopped
+    restart: unless-stopped
 
   splunk:
     << : *splunk-def
