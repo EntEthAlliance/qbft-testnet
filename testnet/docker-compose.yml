@@ -291,6 +291,7 @@ services:
     ports:
       - 8545:8545/tcp
       - 8546:8546/tcp
+      - 30303:30303/tcp
     networks:
       quorum-dev-quickstart:
         ipv4_address: 172.16.239.39
