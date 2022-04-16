@@ -281,6 +281,7 @@ services:
     container_name: rpcnode
     environment:
       - OTEL_RESOURCE_ATTRIBUTES=service.name=rpcnode,service.version=${BESU_VERSION:-latest}
+      - BESU_PERMISSIONS_NODES_CONFIG_FILE_ENABLED=false
     volumes:
       - public-keys:/opt/besu/public-keys/
       - ./config/besu/:/config
